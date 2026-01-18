@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Gallery — Postcards on Film</title>
+  <link rel="stylesheet" href="styles.css" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  <header class="nav">
+    <div class="nav-inner">
+      <a class="brand" href="/">Postcards on Film</a>
+      <nav class="links">
+        <a href="/">Home</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <h1 id="gallery-title" style="margin:0; color: var(--burgundy); font-size: 34px; font-weight: 600;">Gallery</h1>
+    </section>
+
+    <section class="section">
+      <div class="grid" id="gallery"></div>
+    </section>
+  </main>
+
+  <div class="lightbox" id="lightbox">
+    <div class="hint">Click outside or press Esc to close</div>
+    <img id="lightboxImg" alt="" />
+  </div>
+
+  <footer class="footer">
+    <div>© <span id="year"></span> Postcards on Film</div>
+    <div><a href="mailto:contactpostcardsonfilm@gmail.com">contactpostcardsonfilm@gmail.com</a></div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const c = (params.get("c") || "").toLowerCase();
+
+    const titles = {
+      streets: "Streets",
+      nature: "Nature",
+      "everything-else": "Everything Else",
+      details: "Details"
+    };
+
+    const counts = {
+      streets: 7,
+      nature: 4,
+      "everything-else": 1,
+      details: 2
+    };
+
+    document.getElementById("gallery-title").textContent = titles[c] || "Gallery";
+
+    const gallery = document.getElementById("gallery");
+
+    if (!counts[c]) {
+      gallery.innerHTML = `
+        <p style="grid-column: span 12; color: var(--muted);">
+          Open a gallery from the <a href="/" style="color: var(--burgundy); text-decoration: underline;">Home</a> page.
+        </p>
+      `;
+    } else {
+      for (let i = 1; i <= counts[c]; i++) {
+        const num = String(i).padStart(2, "0");
+        const src = `assets/img/${c}-${num}.jpg`;
+
+        const tile = document.createElement("div");
+        tile.className = "tile";
+        tile.innerHTML = `<img data-lightbox="1" src="${src}" alt="${titles[c]} ${i}" />`;
+        gallery.appendChild(tile);
+      }
+    }
+  </script>
+</body>
+</html>
